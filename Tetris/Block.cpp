@@ -389,8 +389,8 @@ void CBlock::GeneratBlock()
 {
 	vecX = 5;
 	vecY = 0;
-	//minoType = rand() % MinoTypes;
-	minoType = I;
+	minoType = rand() % MinoTypes;
+	//minoType = I;
 	minoAngle = rand() % MinoAngles;
 }
 
