@@ -21,9 +21,9 @@ public:
 	// ブロック描画
 	void DrawBlock();
 	// ブロック落下
-	bool FallBlock();
+	bool FallBlock(CField* cField);
 	// ブロック移動
-	bool MoveBlock();
+	bool MoveBlock(CField* cField);
 	// ブロック設置
 	void PutBlock(CField* cField);
 	// 画面表示
@@ -37,7 +37,7 @@ public:
 
 private:
 	// 壁に当たるかどうか
-	bool IsFieldHit(int minoX, int minoY, int minoType, int minoAngle);
+	bool IsFieldHit(int minoX, int minoY, int minoType, int minoAngle,CField* cField);
 
 private:
 

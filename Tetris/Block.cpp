@@ -274,17 +274,17 @@ void CBlock::DrawBlock()
 }
 
 // ブロック落下
-bool CBlock::FallBlock()
+bool CBlock::FallBlock(CField* cField)
 {
 	// フィールド接触判定
-	if (!IsFieldHit(vecX, vecY + 1, minoType, minoAngle))
+	if (!IsFieldHit(vecX, vecY + 1, minoType, minoAngle, cField))
 	{
 		// 接触しない場合
 
 		vecY++;
 		return true;
 	}
-	else
+	//else
 	{
 		// 接触した場合
 
@@ -293,7 +293,7 @@ bool CBlock::FallBlock()
 }
 
 // ブロック移動
-bool CBlock::MoveBlock()
+bool CBlock::MoveBlock(CField* cField)
 {
 	// キー入力判別
 	if (_kbhit())
@@ -304,7 +304,7 @@ bool CBlock::MoveBlock()
 			case 'a':
 
 				// フィールド接触判定
-				if (!IsFieldHit(vecX - 1, vecY, minoType, minoAngle))
+				if (!IsFieldHit(vecX - 1, vecY, minoType, minoAngle, cField))
 				{
 					// 左に移動
 					vecX--;
@@ -312,11 +312,11 @@ bool CBlock::MoveBlock()
 				}
 				break;
 
-			//「D」キー
+				//「D」キー
 			case 'd':
 
 				// フィールド接触判定
-				if (!IsFieldHit(vecX + 1, vecY, minoType, minoAngle))
+				if (!IsFieldHit(vecX + 1, vecY, minoType, minoAngle, cField))
 				{
 					// 右に移動
 					vecX++;
@@ -324,11 +324,23 @@ bool CBlock::MoveBlock()
 				}
 				break;
 
-			// スペースキー
+				//「S」キー
+			case 's':
+
+				// フィールド接触判定
+				if (!IsFieldHit(vecX, vecY + 1, minoType, minoAngle, cField))
+				{
+					// ↓に移動
+					vecY++;
+					return true;
+				}
+				break;
+
+				// スペースキー
 			case 0x20:
 
 				// フィールド接触判定
-				if (!IsFieldHit(vecX, vecY, minoType, (minoAngle + 1) % MinoAngles))
+				if (!IsFieldHit(vecX, vecY, minoType, (minoAngle + 1) % MinoAngles, cField))
 				{
 					// 変形
 					minoAngle = (minoAngle + 1) % MinoAngles;
@@ -341,17 +353,17 @@ bool CBlock::MoveBlock()
 }
 
 // フィールド接触判定
-bool CBlock::IsFieldHit(int minoX, int minoY, int minoType, int minoAngle)
+bool CBlock::IsFieldHit(int minoX, int minoY, int minoType, int minoAngle, CField* cField)
 {
-	CField* Cf;
 	for (int i = 0; i < MINO_HEIGHT; i++)
 	{
 		for (int j = 0; j < MINO_WIDTH; j++)
 		{
 			// ブロックがフィールドに接触するかどうか
-			if (minoShapes[minoType][minoAngle][i][j] && Cf->GetField()[minoY + i][minoX + j])
+			if (minoShapes[minoType][minoAngle][i][j] && cField->GetField()[minoY + i][minoX + j])
 			{
 				// 接触する場合
+
 
 				return true;
 			}
@@ -401,7 +413,7 @@ void CBlock::PutBlock(CField* cField)
 		for (int j = 0; j < MINO_WIDTH; j++)
 		{
 			// フィールドにブロックを置く
-			char block =  cField->GetField()[vecY + i][vecX + j] |= minoShapes[minoType][minoAngle][i][j];
+			char block = cField->GetField()[vecY + i][vecX + j] |= minoShapes[minoType][minoAngle][i][j];
 			cField->SetField(vecY + i, vecX + j, block);
 		}
 	}

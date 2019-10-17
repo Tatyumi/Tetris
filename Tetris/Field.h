@@ -21,7 +21,14 @@ private:
 
 	//メンバ関数
 public:
+	// 初期化
+	void Initialization();
+	// 列確認
+	void CheckLine();
+	// ゲームオーバーチェック
+	bool isGameEnd();
 	// fieldアクセサ
 	charFieldWeight* GetField() { return field; }
 	void SetField(int vecY, int vecX, char block) { field[vecY][vecX] = block; };
+	void SetField(int vecY, int vecX, int block) { field[vecY][vecX] = block; };
 };
