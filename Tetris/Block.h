@@ -8,6 +8,27 @@
 
 typedef char charFieldWeight[FIELD_WIDTH];
 
+// ブロックのタイプ
+enum MINO_TYPE
+{
+	I,
+	O,
+	S,
+	Z,
+	J,
+	L,
+	T
+};
+
+// ブロックの回転度
+enum MINO_ANGLE
+{
+	ZERO,                           // 0
+	NINETY,                         // 90
+	ONE_HANDRED_EIGHTY,             // 180
+	TWO_HANDRED_SEVENTY            // 270
+};
+
 class CBlock
 {
 
