@@ -4,13 +4,13 @@
 #include "Block.h"
 
 // ブロックの種類
-int const MinoTypes = T + 1;
+int const BlockTypes = T + 1;
 
 // ブロックの回転種類
-int const MinoAngles = TWO_HANDRED_SEVENTY + 1;
+int const BlockAngles = TWO_HANDRED_SEVENTY + 1;
 
 // ブロックの変形種類
-char minoShapes[MinoTypes][MinoAngles][MINO_HEIGHT][MINO_WIDTH] = {
+char BlockShapes[BlockTypes][BlockAngles][MINO_HEIGHT][MINO_WIDTH] = {
 	//I
 	{
 		//ZERO
@@ -247,7 +247,7 @@ void CBlock::DrawBlock()
 		for (int j = 0; j < MINO_WIDTH; j++)
 		{
 			// 
-			displyBuffer[vecY + i][vecX + j] |= minoShapes[minoType][minoAngle][i][j];
+			displyBuffer[vecY + i][vecX + j] |= BlockShapes[minoType][minoAngle][i][j];
 		}
 	}
 }
@@ -319,10 +319,10 @@ bool CBlock::MoveBlock(CField* cField)
 			case 0x20:
 
 				// フィールド接触判定
-				if (!IsFieldHit(vecX, vecY, minoType, (minoAngle + 1) % MinoAngles, cField))
+				if (!IsFieldHit(vecX, vecY, minoType, (minoAngle + 1) % BlockAngles, cField))
 				{
 					// 変形
-					minoAngle = (minoAngle + 1) % MinoAngles;
+					minoAngle = (minoAngle + 1) % BlockAngles;
 					return true;
 				}
 				break;
@@ -339,10 +339,9 @@ bool CBlock::IsFieldHit(int minoX, int minoY, int minoType, int minoAngle, CFiel
 		for (int j = 0; j < MINO_WIDTH; j++)
 		{
 			// ブロックがフィールドに接触するかどうか
-			if (minoShapes[minoType][minoAngle][i][j] && cField->GetField()[minoY + i][minoX + j])
+			if (BlockShapes[minoType][minoAngle][i][j] && cField->GetField()[minoY + i][minoX + j])
 			{
 				// 接触する場合
-
 
 				return true;
 			}
@@ -380,9 +379,9 @@ void CBlock::GeneratBlock()
 {
 	vecX = 5;
 	vecY = 0;
-	minoType = rand() % MinoTypes;
+	minoType = rand() % BlockTypes;
 	//minoType = I;
-	minoAngle = rand() % MinoAngles;
+	minoAngle = rand() % BlockAngles;
 }
 
 void CBlock::PutBlock(CField* cField)
@@ -392,7 +391,7 @@ void CBlock::PutBlock(CField* cField)
 		for (int j = 0; j < MINO_WIDTH; j++)
 		{
 			// フィールドにブロックを置く
-			char block = cField->GetField()[vecY + i][vecX + j] |= minoShapes[minoType][minoAngle][i][j];
+			char block = cField->GetField()[vecY + i][vecX + j] |= BlockShapes[minoType][minoAngle][i][j];
 			cField->SetField(vecY + i, vecX + j, block);
 		}
 	}
